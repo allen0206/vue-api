@@ -1,11 +1,11 @@
 <template>
-  <div>
-    <form class="form-signin text-center" @submit.prevent="sign">
+    <div>
+      <form class="form-signin text-center" @submit.prevent="sign">
       <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
       <label for="inputEmail" class="sr-only">Email address</label>
       <input
         type="email"
-        v-model="user.userName"
+        v-model="user.username"
         id="inputEmail"
         class="form-control"
         placeholder="Email address"
@@ -15,7 +15,7 @@
       <label for="inputPassword" class="sr-only">Password</label>
       <input
         type="password"
-        v-model="user.passWord"
+        v-model="user.password"
         id="inputPassword"
         class="form-control"
         placeholder="Password"
@@ -29,7 +29,7 @@
       <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
       <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
     </form>
-  </div>
+    </div>
 </template>
 
 <script>
@@ -37,24 +37,28 @@ export default {
   data() {
     return {
       user: {
-        userName: '',
-        passWord: '',
+        username: '',
+        password: '',
       }
     };
   },
   methods: {
     sign() {
-      const api = `${process.env.APIPATH}/admin/signin`;
+      const api = `${process.env.APIPATH}admin/signin`;
       const vm = this;
-      this.$http.post(api, this.user).then(response => {
+      console.log(vm.user);
+      vm.$http.post(api, vm.user).then(response => {
         console.log(response.data);
+        if(response.data.success){
+          vm.$router.push('/admin/products')
+        }
       });
     }
   }
 };
 </script>
 
-<style scope>
+<style scoped>
 html,
 body {
   height: 100%;
