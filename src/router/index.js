@@ -5,6 +5,7 @@ Vue.use(Router)
 import Dashboard from '@/components/dashboard'
 import login from '@/components/pages/login'
 import products from '@/components/pages/products'
+import customer from '@/components/pages/customer'
 
 export default new Router({
   routes: [
@@ -19,7 +20,7 @@ export default new Router({
     },
     {
       path: '/admin',
-      name: 'HelloWorld',
+      name: 'dashboard',
       component: Dashboard,
       children: [
        {
@@ -30,6 +31,18 @@ export default new Router({
            requiresAuth: true
          },
        },
+      ],
+    },
+    {
+      path: '/',
+      name: 'dashboard',
+      component: Dashboard,
+      children: [
+        {
+        path: 'customer',
+        name: 'customer',
+        component: customer,
+      },
       ],
     },
   ]
