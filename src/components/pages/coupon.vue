@@ -2,7 +2,7 @@
   <div>
     <loading :active.sync="isLoading"></loading>
     <div class="mt-4 text-right">
-      <button class="btn btn-primary" @click="openmodal">新增優惠卷</button>
+      <button class="btn btn-primary" @click.prevent="openmodal(true)">新增優惠卷</button>
     </div>
     <div class="containter mt-4">
       <table class="table">
@@ -28,8 +28,8 @@
               <td>{{coupon.due_date}}</td>
              <td>
                <div class="btn-group">
-                <button class="btn btn-outline-primary">編輯</button>
-                <button class="btn btn-outline-danger">刪除</button>
+                <button class="btn btn-outline-primary" @click.prevent="openmodal(false,coupon)">編輯</button>
+                <button class="btn btn-outline-danger" @click.prevent="deletecoupon(coupon)">刪除</button>
                </div>
              </td>
             </tr>
@@ -72,7 +72,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-            <button type="button" class="btn btn-primary" @click="addcoupon">確認</button>
+            <button type="button" class="btn btn-primary" @click.prevent="addcoupon">確認</button>
           </div>
         </div>
       </div>
@@ -89,7 +89,8 @@ export default {
       coupons: [],
       coupon: {},
       isLoading: false,
-      pagination: {}
+      pagination: {},
+      isNew:false,
     };
   },
   methods: {
@@ -107,24 +108,57 @@ export default {
         vm.isLoading = false;
       });
     },
-    openmodal(){
+    openmodal(isNew,item){
+      if(isNew){
+         this.coupon = {}
+         this.isNew = true
+      }else{
+         this.coupon = Object.assign({},item)
+         this.isNew = false
+      }
       $('#addcoupon').modal('show')
     },
     addcoupon() {
-      const api = `${process.env.APIPATH}api/${
+      let api = `${process.env.APIPATH}api/${
         process.env.CUSTOMPATH
       }/admin/coupon`;
+      let httpmethods = "post"
       const vm = this;
       vm.isLoading = true;
-      vm.$http.post(api,{data:vm.coupon}).then(response => {
+      if (!vm.isNew) {
+          api = `${process.env.APIPATH}api/${
+          process.env.CUSTOMPATH
+        }/admin/coupon/${vm.coupon.id}`;
+        httpmethods = "put";
+      }
+      vm.$http[httpmethods](api,{data:vm.coupon}).then(response => {
         console.log(response.data);
+        vm.isLoading = false
         if(response.data.success){
-        vm.getcoupons();
         $('#addcoupon').modal('hide')
-        vm.isLoading = false;
+        vm.getcoupons();
+        ;
         }else{
         $('#addcoupon').modal('hide');
         alert('新增失敗');
+        }
+      });
+    },
+    deletecoupon(item){
+      const api = `${process.env.APIPATH}api/${
+        process.env.CUSTOMPATH
+      }/admin/coupon/${item.id}`;
+      const vm = this;
+      console.log(process.env.APIPATH, process.env.CUSTOMPATH);
+      vm.isLoading = true;
+      vm.$http.delete(api).then(response => {
+        console.log(response.data);
+        vm.isLoading = false;
+        if (response.data) {
+          vm.getcoupons();
+        } else {
+          vm.getcoupons();
+          alert("刪除失敗");
         }
       });
     }
