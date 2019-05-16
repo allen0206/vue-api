@@ -6,6 +6,7 @@ import Dashboard from '@/components/dashboard'
 import login from '@/components/pages/login'
 import products from '@/components/pages/products'
 import coupon from '@/components/pages/coupon'
+import order from '@/components/pages/order'
 import customer from '@/components/pages/customer'
 import checkout from '@/components/pages/checkout'
 
@@ -37,6 +38,14 @@ export default new Router({
           path: 'coupon',
           name: 'coupon',
           component: coupon,
+          meta: {
+            requiresAuth: true
+          },
+        },
+        {
+          path: 'order',
+          name: 'order',
+          component: order,
           meta: {
             requiresAuth: true
           },

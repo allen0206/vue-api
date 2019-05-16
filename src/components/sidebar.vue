@@ -13,6 +13,9 @@
                 <router-link data-feather="file-text" class="nav-link" to="/admin/products">產品列表</router-link>
               </li>
               <li class="nav-item">
+                <router-link data-feather="file-text" class="nav-link" to="/admin/order">訂單列表</router-link>
+              </li>
+              <li class="nav-item">
                 <router-link data-feather="file-text" class="nav-link" to="/admin/coupon">優惠卷</router-link>
               </li>
             </ul>
