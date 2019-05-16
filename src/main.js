@@ -10,12 +10,16 @@ import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 import './bus';
 import currency from './filters/currency'
+import VeeValidate from 'vee-validate';
+import validationMessages from 'vee-validate/dist/locale/zh_TW';
 
 Vue.config.productionTip = false
 Vue.use(VueAxios, axios);
 axios.defaults.withCredentials = true;
 Vue.component('Loading', Loading);
-Vue.filter('currency', currency)
+Vue.filter('currency', currency);
+Vue.use(VeeValidate);
+VeeValidate.Validator.localize('zh_TW',validationMessages)
 
 /* eslint-disable no-new */
 new Vue({

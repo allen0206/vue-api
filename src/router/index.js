@@ -6,6 +6,7 @@ import Dashboard from '@/components/dashboard'
 import login from '@/components/pages/login'
 import products from '@/components/pages/products'
 import customer from '@/components/pages/customer'
+import checkout from '@/components/pages/checkout'
 
 export default new Router({
   routes: [
@@ -42,7 +43,12 @@ export default new Router({
         path: 'customer',
         name: 'customer',
         component: customer,
-      },
+        },
+        {
+          path: 'checkout/:orderId',
+          name: 'checkout',
+          component: checkout,
+        }
       ],
     },
   ]
