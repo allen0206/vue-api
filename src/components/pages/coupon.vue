@@ -1,0 +1,136 @@
+<template>
+  <div>
+    <loading :active.sync="isLoading"></loading>
+    <div class="mt-4 text-right">
+      <button class="btn btn-primary" @click="openmodal">新增優惠卷</button>
+    </div>
+    <div class="containter mt-4">
+      <table class="table">
+        <thead>
+          <tr>
+            <th >名稱</th>
+            <th width="140">優惠碼</th>
+            <th width="140g">優惠趴數</th>
+            <th width="140">是否啟用</th>
+            <th width="200">到期日</th>
+            <th width="160" class="text-center">編輯</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr v-for="coupon in coupons" :key="coupon.id">
+              <td>{{coupon.title}}</td>
+              <td>{{coupon.code}}</td>
+              <td>{{coupon.percent}}%</td>
+              <td>
+                <span v-if="coupon.is_enabled === 1">啟用</span>
+                <span v-else>未啟用</span>
+              </td>
+              <td>{{coupon.due_date}}</td>
+             <td>
+               <div class="btn-group">
+                <button class="btn btn-outline-primary">編輯</button>
+                <button class="btn btn-outline-danger">刪除</button>
+               </div>
+             </td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="modal" tabindex="-1" role="dialog" id="addcoupon">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">新增優惠卷</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form class="form">
+              <div class="form-group">
+                <label for="title">優惠卷名稱</label>
+                <input type="text" id="title" class="form-control" v-model="coupon.title">
+              </div>
+              <div class="form-group">
+                <label for="percent">優惠趴數</label>
+                <input type="number" id="percent" class="form-control" v-model="coupon.percent">
+              </div>
+              <div class="form-group">
+                <label for="data">到期日</label>
+                <input type="number" id="date" class="form-control" v-model="coupon.due_date">
+              </div>
+              <div class="form-group">
+                <label for="code">優惠卷編號</label>
+                <input type="text" id="code" class="form-control" v-model="coupon.code">
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value id="defaultCheck1" v-model="coupon.is_enabled" :true-value="1" :false-value="0">
+                <label class="form-check-label" for="defaultCheck1">是否啟用</label>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary" @click="addcoupon">確認</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import $ from "jquery";
+
+export default {
+  data() {
+    return {
+      coupons: [],
+      coupon: {},
+      isLoading: false,
+      pagination: {}
+    };
+  },
+  methods: {
+    getcoupons(page = 1) {
+      const api = `${process.env.APIPATH}api/${
+        process.env.CUSTOMPATH
+      }/admin/coupons?page=${page}`;
+      const vm = this;
+      vm.isLoading = true;
+      vm.$http.get(api).then(response => {
+        console.log(response.data);
+        vm.coupons = response.data.coupons;
+        console.log(vm.coupons);
+        vm.pagination = response.data.pagination;
+        vm.isLoading = false;
+      });
+    },
+    openmodal(){
+      $('#addcoupon').modal('show')
+    },
+    addcoupon() {
+      const api = `${process.env.APIPATH}api/${
+        process.env.CUSTOMPATH
+      }/admin/coupon`;
+      const vm = this;
+      vm.isLoading = true;
+      vm.$http.post(api,{data:vm.coupon}).then(response => {
+        console.log(response.data);
+        if(response.data.success){
+        vm.getcoupons();
+        $('#addcoupon').modal('hide')
+        vm.isLoading = false;
+        }else{
+        $('#addcoupon').modal('hide');
+        alert('新增失敗');
+        }
+      });
+    }
+  },
+  created() {
+    this.getcoupons();
+  }
+};
+</script>
