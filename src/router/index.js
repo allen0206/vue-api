@@ -3,18 +3,19 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 import Dashboard from '@/components/dashboard'
+import home from '@/components/home'
 import login from '@/components/pages/login'
 import products from '@/components/pages/products'
 import coupon from '@/components/pages/coupon'
 import order from '@/components/pages/order'
 import customer from '@/components/pages/customer'
 import checkout from '@/components/pages/checkout'
+import commodity from '@/components/pages/commodity'
 
 export default new Router({
-  routes: [
-    {
+  routes: [{
       path: '*',
-      redirect:'/login',
+      redirect: '/login',
     },
     {
       path: '/login',
@@ -22,16 +23,25 @@ export default new Router({
       component: login,
     },
     {
+      path: '/home',
+      name: 'home',
+      component: home,
+      children: [{
+        path: 'commodity',
+        name: 'commodity',
+        component: commodity,
+      }, ]
+    },
+    {
       path: '/admin',
       name: 'dashboard',
       component: Dashboard,
-      children: [
-       {
-         path: 'products',
-         name: 'products',
-         component: products,
-         meta: {
-           requiresAuth: true
+      children: [{
+          path: 'products',
+          name: 'products',
+          component: products,
+          meta: {
+            requiresAuth: true
           },
         },
         {
@@ -56,11 +66,10 @@ export default new Router({
       path: '/',
       name: 'dashboard',
       component: Dashboard,
-      children: [
-        {
-        path: 'customer',
-        name: 'customer',
-        component: customer,
+      children: [{
+          path: 'customer',
+          name: 'customer',
+          component: customer,
         },
         {
           path: 'checkout/:orderId',
