@@ -8,9 +8,11 @@ import login from '@/components/pages/login'
 import products from '@/components/pages/products'
 import coupon from '@/components/pages/coupon'
 import order from '@/components/pages/order'
-import customer from '@/components/pages/customer'
-import checkout from '@/components/pages/checkout'
+// import customer from '@/components/pages/customer'
+// import checkout from '@/components/pages/checkout'
 import commodity from '@/components/pages/commodity'
+import information from '@/components/pages/information'
+
 
 export default new Router({
   routes: [{
@@ -27,10 +29,16 @@ export default new Router({
       name: 'home',
       component: home,
       children: [{
-        path: 'commodity',
-        name: 'commodity',
-        component: commodity,
-      }, ]
+          path: 'commodity',
+          name: 'commodity',
+          component: commodity,
+        },
+        {
+          path: 'information',
+          name: 'information',
+          component: information,
+        }
+      ]
     },
     {
       path: '/admin',
@@ -62,21 +70,21 @@ export default new Router({
         },
       ],
     },
-    {
-      path: '/',
-      name: 'dashboard',
-      component: Dashboard,
-      children: [{
-          path: 'customer',
-          name: 'customer',
-          component: customer,
-        },
-        {
-          path: 'checkout/:orderId',
-          name: 'checkout',
-          component: checkout,
-        }
-      ],
-    },
+    // {
+    //   path: '/',
+    //   name: 'dashboard',
+    //   component: Dashboard,
+    //   children: [{
+    //       path: 'customer',
+    //       name: 'customer',
+    //       component: customer,
+    //     },
+    //     {
+    //       path: 'checkout/:orderId',
+    //       name: 'checkout',
+    //       component: checkout,
+    //     }
+    //   ],
+    // },
   ]
 })
