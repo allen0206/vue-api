@@ -27,7 +27,7 @@
             </h6>
             <ul class="nav flex-column mb-2">
               <li class="nav-item">
-                <router-link data-feather="file-text" class="nav-link" to="/customer">模擬訂單</router-link>
+                <router-link data-feather="file-text" class="nav-link" to="commodity">模擬訂單</router-link>
               </li>
             </ul>
           </div>

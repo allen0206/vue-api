@@ -3,7 +3,7 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 import Dashboard from '@/components/dashboard'
-import home from '@/components/home'
+// import home from '@/components/home'
 import login from '@/components/pages/login'
 import products from '@/components/pages/products'
 import coupon from '@/components/pages/coupon'
@@ -12,12 +12,12 @@ import order from '@/components/pages/order'
 // import checkout from '@/components/pages/checkout'
 import commodity from '@/components/pages/commodity'
 import information from '@/components/pages/information'
-
+import payment from '@/components/pages/payment'
 
 export default new Router({
   routes: [{
       path: '*',
-      redirect: '/login',
+      redirect: '/commodity',
     },
     {
       path: '/login',
@@ -25,20 +25,19 @@ export default new Router({
       component: login,
     },
     {
-      path: '/home',
-      name: 'home',
-      component: home,
-      children: [{
-          path: 'commodity',
-          name: 'commodity',
-          component: commodity,
-        },
-        {
-          path: 'information',
-          name: 'information',
-          component: information,
-        }
-      ]
+      path: '/commodity',
+      name: 'commodity',
+      component: commodity,
+    },
+    {
+      path: '/information',
+      name: 'information',
+      component: information,
+    },
+    {
+      path: '/payment/:orderId',
+      name: 'payment',
+      component: payment,
     },
     {
       path: '/admin',

@@ -25,7 +25,7 @@
 
     <table class="table">
       <tbody>
-        <tr>
+        <tr width="200">
           <th width="100">Email</th>
           <td>{{ order.user.email }}</td>
         </tr>
@@ -50,8 +50,11 @@
         </tr>
       </tbody>
     </table>
+      <div class="text-right">
+        <router-link class="btn btn-outline-primary" to="/home/commodity">繼續選購</router-link>
+      </div>
     <div class="text-right" v-if="order.is_paid === false">
-      <button class="btn btn-danger">確認付款去</button>
+      <button class="btn btn-danger" >確認付款去</button>
     </div>
   </form>
   </div>
