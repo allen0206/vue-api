@@ -3,13 +3,10 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 import Dashboard from '@/components/dashboard'
-// import home from '@/components/home'
 import login from '@/components/pages/login'
 import products from '@/components/pages/products'
 import coupon from '@/components/pages/coupon'
 import order from '@/components/pages/order'
-// import customer from '@/components/pages/customer'
-// import checkout from '@/components/pages/checkout'
 import commodity from '@/components/pages/commodity'
 import information from '@/components/pages/information'
 import payment from '@/components/pages/payment'
@@ -69,21 +66,5 @@ export default new Router({
         },
       ],
     },
-    // {
-    //   path: '/',
-    //   name: 'dashboard',
-    //   component: Dashboard,
-    //   children: [{
-    //       path: 'customer',
-    //       name: 'customer',
-    //       component: customer,
-    //     },
-    //     {
-    //       path: 'checkout/:orderId',
-    //       name: 'checkout',
-    //       component: checkout,
-    //     }
-    //   ],
-    // },
   ]
 })
