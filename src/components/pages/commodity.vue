@@ -1,73 +1,101 @@
 <template>
   <div>
     <loading :active.sync="isLoading"></loading>
-    <div>
-      <nav class="navbar navbar-light bg-light">
-        <router-link to="/commodity">飽飽飽</router-link>
-        <div class="text-right" style="position:relative">
-          <a href="#" id="dropdown" data-toggle="dropdown" style="position:relative">
-            <i class="fas fa-shopping-cart fa-2x"></i>
-            <span
-              class="badge badge-secondary h4"
-              style="position:absolute; left:0px ;top:-15px"
-            >{{length}}</span>
-          </a>
-          <div
-            class="dropdown-menu pt-0"
-            style="position:absolute; left:auto ;right:0;width:400px;"
-          >
-            <table class="table mb-0">
-              <thead>
-                <tr>
-                  <th>刪除</th>
-                  <th>名稱</th>
-                  <th>價錢</th>
-                  <th>數量</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(cart) in carts.carts" :key="cart.id">
-                  <td>
-                    <button class="btn" @click.prevent="deletecart(cart.id)">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                  <td>{{cart.product.title}}</td>
-                  <td>{{cart.final_total}}</td>
-                  <td>{{cart.qty}}{{cart.product.unit}}</td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td colspan="3" class="text-right">
-                    <span>總金額</span>
-                  </td>
-                  <td class>
-                    <span>{{carts.final_total}}</span>
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
-            <div class="text-right mr-3">
-              <router-link class="btn btn-primary" to="/information">結帳去</router-link>
+    <div class="container">
+      <div class="img" style="position:relative;">
+        <div style="background-color:black;">
+          <nav class="navbar">
+            <router-link to="/commodity" class="text-white">
+              <h3>飽飽飽</h3>
+            </router-link>
+            <div class="text-right" style="position:relative">
+              <a href="#" id="dropdown" data-toggle="dropdown" style="position:relative">
+                <i class="fas fa-shopping-cart fa-2x text-white"></i>
+                <span
+                  v-if="length>0"
+                  class="badge badge-secondary h4"
+                  style="position:absolute; left:0px ;top:-15px"
+                >{{length}}</span>
+              </a>
+              <div
+                class="dropdown-menu pt-0"
+                style="position:absolute; left:auto ;right:0;width:400px;"
+              >
+                <table class="table mb-0">
+                  <thead>
+                    <tr>
+                      <th>刪除</th>
+                      <th>名稱</th>
+                      <th>價錢</th>
+                      <th>數量</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(cart) in carts.carts" :key="cart.id">
+                      <td>
+                        <button class="btn" @click.prevent="deletecart(cart.id)">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </td>
+                      <td>{{cart.product.title}}</td>
+                      <td>{{cart.final_total}}</td>
+                      <td>{{cart.qty}}{{cart.product.unit}}</td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="3" class="text-right">
+                        <span>總金額</span>
+                      </td>
+                      <td class>
+                        <span>{{carts.final_total}}</span>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+                <div class="text-right mr-3">
+                  <router-link class="btn btn-primary" to="/information">結帳去</router-link>
+                </div>
+              </div>
             </div>
-          </div>
+          </nav>
         </div>
-      </nav>
-    </div>
-    <div class="container mt-4">
-      <div class="row">
+        <div class="bg-black d-flex align-items-center justify-content-center mt-5" style="position:absolute; left:50%;top:50%; transform: translate(-50%,-50%)">
+          <h2 class="text-white text-center">飽飽飽 讓你吃到飽</h2>
+        </div>
+      </div>
+      <div class="row mt-3">
         <div class="col-md-2">
-          <div class="list-group">
-            <a href="#" class="btn btn-outline-primary rounded-0 active">全部</a>
-            <a href="#" class="btn btn-outline-primary rounded-0">漢堡</a>
-            <a href="#" class="btn btn-outline-primary rounded-0">其他</a>
-            <a href="#" class="btn btn-outline-primary rounded-0">飲料</a>
+          <div class="list-group sticky-top">
+            <a
+              href="#"
+              class="btn btn-outline-primary rounded-0"
+              :class="{'active': tabs == 'all'}"
+              @click.prevent="tabs = 'all'"
+            >全部</a>
+            <a
+              href="#"
+              class="btn btn-outline-primary rounded-0"
+              :class="{'active': tabs == 'burger'}"
+              @click.prevent="tabs = 'burger'"
+            >漢堡</a>
+            <a
+              href="#"
+              class="btn btn-outline-primary rounded-0"
+              :class="{'active': tabs == 'other'}"
+              @click.prevent="tabs = 'other'"
+            >其他</a>
+            <a
+              href="#"
+              class="btn btn-outline-primary rounded-0"
+              :class="{'active': tabs == 'drink'}"
+              @click.prevent="tabs = 'drink'"
+            >飲料</a>
           </div>
         </div>
         <div class="col-md-10">
           <div class="row">
-            <div class="col-md-4 mb-4" v-for="(item) in products" :key="item.id">
+            <div class="col-md-4 mb-4" v-for="(item) in filterarr" :key="item.id">
               <div class="card border-0 shadow-sm">
                 <div
                   style="height: 150px; background-size: cover; background-position: center"
@@ -154,6 +182,27 @@
         </div>
       </div>
     </div>
+    <footer class="bg-light text-muted py-5 container">
+      <div>
+        <ul class="list-inline text-center">
+          <li class="list-inline-item">© Copright 2017 飽飽飽</li>
+          <li class="list-inline-item">
+            <a class="text-info" href="#">
+              <i class="fa fa-instagram" aria-hidden="true"></i> Instagrame
+            </a>
+          </li>
+          <li class="list-inline-item">
+            <a class="text-info" href="#">
+              <i class="fa fa-facebook-square" aria-hidden="true"></i> Facebook
+            </a>
+          </li>
+          <li class="list-inline-item">
+            <a class="text-info" href="#">About</a>
+          </li>
+        </ul>
+        <p class="text-center">Made with Bootstrap4</p>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -170,6 +219,7 @@ export default {
       },
       carts: {},
       length: "",
+      tabs: "all"
     };
   },
   methods: {
@@ -243,7 +293,28 @@ export default {
         vm.getcart();
         vm.isLoading = false;
       });
-    },
+    }
+  },
+  computed: {
+    filterarr() {
+      const vm = this;
+      if (vm.tabs === "all") {
+        return vm.products;
+      } else if (vm.tabs === "burger") {
+        return vm.products.filter(item => {
+          return item.category === "漢堡";
+          console.log(item);
+        });
+      } else if (vm.tabs === "drink") {
+        return vm.products.filter(item => {
+          return item.category === "飲料";
+        });
+      } else if (vm.tabs === "other") {
+        return vm.products.filter(item => {
+          return item.category === "其他";
+        });
+      }
+    }
   },
   created() {
     this.getproducts();
@@ -251,3 +322,19 @@ export default {
   }
 };
 </script>
+
+<style lang="css" scoped>
+.img {
+  background-image: url("https://images.unsplash.com/photo-1457460866886-40ef8d4b42a0?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60");
+  height: 420px;
+  background-position: bottom;
+  background-size: cover;
+}
+.bg-black {
+  height: 150px;
+  background-color: black;
+  opacity: 0.6;
+  width: 40%;
+}
+</style>
+

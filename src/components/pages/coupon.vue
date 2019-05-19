@@ -35,6 +35,24 @@
             </tr>
         </tbody>
       </table>
+
+      <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item" :class="{'disabled': !pagination.has_pre}">
+          <a class="page-link" href="#" aria-label="Previous"  @click.prevent="getcoupons(pagination.current_page - 1)">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item" v-for="page in pagination.total_pages" :key="page" :class="{'active': pagination.current_page} === page">
+          <a class="page-link" href="#" @click.prevent="getcoupons(page)">{{page}}</a>
+        </li>
+        <li class="page-item" :class="{'disabled': !pagination.has_next}" >
+          <a class="page-link" href="#" aria-label="Next" @click.prevent="getcoupons(pagination.current_page + 1)">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
     </div>
 
     <div class="modal" tabindex="-1" role="dialog" id="addcoupon">
@@ -131,6 +149,7 @@ export default {
         }/admin/coupon/${vm.coupon.id}`;
         httpmethods = "put";
       }
+      console.log(vm.coupon);
       vm.$http[httpmethods](api,{data:vm.coupon}).then(response => {
         console.log(response.data);
         vm.isLoading = false

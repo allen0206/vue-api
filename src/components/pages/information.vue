@@ -1,62 +1,73 @@
 <template>
   <div>
     <loading :active.sync="isLoading"></loading>
-     <div>
-      <nav class="navbar navbar-light bg-light">
-        <router-link to="/commodity">飽飽飽</router-link>
-        <div class="text-right" style="position:relative">
-          <a href="#" id="dropdown" data-toggle="dropdown" style="position:relative">
-            <i class="fas fa-shopping-cart fa-2x"></i>
-            <span
-              class="badge badge-secondary h4"
-              style="position:absolute; left:0px ;top:-15px"
-            >{{length}}</span>
-          </a>
-          <div
-            class="dropdown-menu pt-0"
-            style="position:absolute; left:auto ;right:0;width:400px;"
-          >
-            <table class="table mb-0">
-              <thead>
-                <tr>
-                  <th>刪除</th>
-                  <th>名稱</th>
-                  <th>價錢</th>
-                  <th>數量</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(cart) in carts.carts" :key="cart.id">
-                  <td>
-                    <button class="btn" @click.prevent="deletecart(cart.id)">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                  <td>{{cart.product.title}}</td>
-                  <td>{{cart.final_total}}</td>
-                  <td>{{cart.qty}}{{cart.product.unit}}</td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td colspan="3" class="text-right">
-                    <span>總金額</span>
-                  </td>
-                  <td class>
-                    <span>{{carts.final_total}}</span>
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
-            <div class="text-right mr-3">
-              <router-link class="btn btn-primary" to="/information">結帳去</router-link>
+    <div class="container">
+      <div class="img" style="position:relative;">
+        <div style="background-color:black;">
+          <nav class="navbar">
+            <router-link to="/commodity" class="text-white">
+              <h3>飽飽飽</h3>
+            </router-link>
+            <div class="text-right" style="position:relative">
+              <a href="#" id="dropdown" data-toggle="dropdown" style="position:relative">
+                <i class="fas fa-shopping-cart fa-2x text-white"></i>
+                <span
+                  v-if="length>0"
+                  class="badge badge-secondary h4"
+                  style="position:absolute; left:0px ;top:-15px"
+                >{{length}}</span>
+              </a>
+              <div
+                class="dropdown-menu pt-0"
+                style="position:absolute; left:auto ;right:0;width:400px;"
+              >
+                <table class="table mb-0">
+                  <thead>
+                    <tr>
+                      <th>刪除</th>
+                      <th>名稱</th>
+                      <th>價錢</th>
+                      <th>數量</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(cart) in carts.carts" :key="cart.id">
+                      <td>
+                        <button class="btn" @click.prevent="deletecart(cart.id)">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </td>
+                      <td>{{cart.product.title}}</td>
+                      <td>{{cart.final_total}}</td>
+                      <td>{{cart.qty}}{{cart.product.unit}}</td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="3" class="text-right">
+                        <span>總金額</span>
+                      </td>
+                      <td class>
+                        <span>{{carts.final_total}}</span>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+                <div class="text-right mr-3">
+                  <router-link class="btn btn-primary" to="/information">結帳去</router-link>
+                </div>
+              </div>
             </div>
-          </div>
+          </nav>
         </div>
-      </nav>
-    </div>
-    <div class="container mt-3">
-      <h1 class="text-center mb-3 text-secondary">六角血拼 結帳</h1>
+        <div
+          class="bg-black d-flex align-items-center justify-content-center mt-5"
+          style="position:absolute; left:50%;top:50%; transform: translate(-50%,-50%)"
+        >
+          <h2 class="text-white text-center">飽飽飽 讓你吃到飽</h2>
+        </div>
+      </div>
+      <h1 class="text-center mb-3 text-secondary mt-3">飽飽飽 結帳</h1>
       <section class="form-row align-items-center text-center">
         <div class="col">
           <div class="alert alert-success alert-rounded mb-0" role="alert">1.輸入訂單資料</div>
@@ -112,39 +123,46 @@
                 </tr>
               </tbody>
             </table>
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="優惠碼" v-model="code">
+              <button class="btn btn-secondary rounded-0" @click.prevent="usecoupon">確認</button>
+            </div>
           </div>
 
           <h5 class="py-3 mt-5 mb-2 text-center bg-light">訂購人資訊</h5>
           <form class="form" @submit.prevent="addform">
-            <div class="form-group">
-              <label for="useremail">Email</label>
-              <input
-                type="email"
-                class="form-control"
-                name="email"
-                id="useremail"
-                v-model="form.user.email"
-                placeholder="請輸入 Email"
-                v-validate="'required|email'"
-                :class="{'is-invalid': errors.has('email')}"
-              >
-              <span class="text-danger" v-if="errors.has('email')">{{errors.first('email')}}</span>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label for="useremail">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  name="email"
+                  id="useremail"
+                  v-model="form.user.email"
+                  placeholder="請輸入 Email"
+                  v-validate="'required|email'"
+                  :class="{'is-invalid': errors.has('email')}"
+                >
+                <span class="text-danger" v-if="errors.has('email')">{{errors.first('email')}}</span>
+              </div>
+              <div class="col-md-6">
+                <label for="username">收件人姓名</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="name"
+                  id="username"
+                  v-model="form.user.name"
+                  placeholder="輸入姓名"
+                  v-validate="'required'"
+                  :class="{'is-invalid': errors.has('name')}"
+                >
+                <span class="text-danger" v-if="errors.has('name')">請輸入姓名</span>
+              </div>
             </div>
 
-            <div class="form-group">
-              <label for="username">收件人姓名</label>
-              <input
-                type="text"
-                class="form-control"
-                name="name"
-                id="username"
-                v-model="form.user.name"
-                placeholder="輸入姓名"
-                v-validate="'required'"
-                :class="{'is-invalid': errors.has('name')}"
-              >
-              <span class="text-danger" v-if="errors.has('name')">請輸入姓名</span>
-            </div>
+            <div class="form-group"></div>
 
             <div class="form-group">
               <label for="usertel">收件人電話</label>
@@ -186,8 +204,7 @@
                 name
                 id="comment"
                 class="form-control"
-                cols="30"
-                rows="10"
+
                 v-model="form.message"
               ></textarea>
             </div>
@@ -198,6 +215,27 @@
         </div>
       </section>
     </div>
+    <footer class="bg-light text-muted py-5 container mt-3">
+      <div>
+        <ul class="list-inline text-center">
+          <li class="list-inline-item">© Copright 2017 飽飽飽</li>
+          <li class="list-inline-item">
+            <a class="text-info" href="#">
+              <i class="fa fa-instagram" aria-hidden="true"></i> Instagrame
+            </a>
+          </li>
+          <li class="list-inline-item">
+            <a class="text-info" href="#">
+              <i class="fa fa-facebook-square" aria-hidden="true"></i> Facebook
+            </a>
+          </li>
+          <li class="list-inline-item">
+            <a class="text-info" href="#">About</a>
+          </li>
+        </ul>
+        <p class="text-center">Made with Bootstrap4</p>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -216,7 +254,8 @@ export default {
         },
         message: ""
       },
-      length: '',
+      length: "",
+      code: ""
     };
   },
   methods: {
@@ -263,6 +302,20 @@ export default {
           console.log("送出失敗");
         }
       });
+    },
+    usecoupon() {
+      const api = `${process.env.APIPATH}api/${process.env.CUSTOMPATH}/coupon`;
+      const vm = this;
+      const coupon = {
+        code: vm.code
+      };
+      console.log(vm.code);
+      vm.isLoading = true;
+      vm.$http.post(api, { data: coupon }).then(response => {
+        console.log(response.data);
+        vm.getcart();
+        vm.isLoading = false;
+      });
     }
   },
   created() {
@@ -270,3 +323,18 @@ export default {
   }
 };
 </script>
+
+<style lang="css" scoped>
+.img {
+  background-image: url("https://images.unsplash.com/photo-1457460866886-40ef8d4b42a0?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60");
+  height: 420px;
+  background-position: bottom;
+  background-size: cover;
+}
+.bg-black {
+  height: 150px;
+  background-color: black;
+  opacity: 0.6;
+  width: 40%;
+}
+</style>

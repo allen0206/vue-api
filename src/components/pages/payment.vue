@@ -1,64 +1,72 @@
 <template>
   <div>
     <loading :active.sync="isLoading"></loading>
-     <div>
-      <nav class="navbar navbar-light bg-light">
-        <router-link to="/commodity">飽飽飽</router-link>
-        <div class="text-right" style="position:relative">
-          <a href="#" id="dropdown" data-toggle="dropdown" style="position:relative">
-            <i class="fas fa-shopping-cart fa-2x"></i>
-            <span
-              class="badge badge-secondary h4"
-              style="position:absolute; left:0px ;top:-15px"
-            >{{length}}</span>
-          </a>
-          <div
-            class="dropdown-menu pt-0"
-            style="position:absolute; left:auto ;right:0;width:400px;"
-          >
-            <table class="table mb-0">
-              <thead>
-                <tr>
-                  <th>刪除</th>
-                  <th>名稱</th>
-                  <th>價錢</th>
-                  <th>數量</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(cart) in carts.carts" :key="cart.id">
-                  <td>
-                    <button class="btn" @click.prevent="deletecart(cart.id)">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                  <td>{{cart.product.title}}</td>
-                  <td>{{cart.final_total}}</td>
-                  <td>{{cart.qty}}{{cart.product.unit}}</td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td colspan="3" class="text-right">
-                    <span>總金額</span>
-                  </td>
-                  <td class>
-                    <span>{{carts.final_total}}</span>
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
-            <div class="text-right mr-3">
-              <router-link class="btn btn-primary" to="/information">結帳去</router-link>
+    <div class="container">
+      <div class="img" style="position:relative;">
+        <div style="background-color:black;">
+          <nav class="navbar">
+            <router-link to="/commodity" class="text-white">
+              <h3>飽飽飽</h3>
+            </router-link>
+            <div class="text-right" style="position:relative">
+              <a href="#" id="dropdown" data-toggle="dropdown" style="position:relative">
+                <i class="fas fa-shopping-cart fa-2x text-white"></i>
+                <span
+                  v-if="length>0"
+                  class="badge badge-secondary h4"
+                  style="position:absolute; left:0px ;top:-15px"
+                >{{length}}</span>
+              </a>
+              <div
+                class="dropdown-menu pt-0"
+                style="position:absolute; left:auto ;right:0;width:400px;"
+              >
+                <table class="table mb-0">
+                  <thead>
+                    <tr>
+                      <th>刪除</th>
+                      <th>名稱</th>
+                      <th>價錢</th>
+                      <th>數量</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(cart) in carts.carts" :key="cart.id">
+                      <td>
+                        <button class="btn" @click.prevent="deletecart(cart.id)">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </td>
+                      <td>{{cart.product.title}}</td>
+                      <td>{{cart.final_total}}</td>
+                      <td>{{cart.qty}}{{cart.product.unit}}</td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="3" class="text-right">
+                        <span>總金額</span>
+                      </td>
+                      <td class>
+                        <span>{{carts.final_total}}</span>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+                <div class="text-right mr-3">
+                  <router-link class="btn btn-primary" to="/information">結帳去</router-link>
+                </div>
+              </div>
             </div>
-          </div>
+          </nav>
         </div>
-      </nav>
-    </div>
-    <div class="container py-5">
+        <div class="bg-black d-flex align-items-center justify-content-center mt-5" style="position:absolute; left:50%;top:50%; transform: translate(-50%,-50%)">
+          <h2 class="text-white text-center">飽飽飽 讓你吃到飽</h2>
+        </div>
+      </div>
       <div class="row justify-content-center">
         <div class="col-md-8">
-          <h1 class="text-center mb-3 text-secondary">飽飽飽 結帳完成</h1>
+          <h1 class="text-center mb-3 mt-3 text-secondary">飽飽飽 結帳完成</h1>
           <section class="form-row align-items-center text-center">
             <div class="col">
               <div class="alert alert-success alert-rounded mb-0" role="alert">完成</div>
@@ -126,6 +134,27 @@
         </div>
       </div>
     </div>
+    <footer class="bg-light text-muted py-5 container mt-3">
+      <div>
+        <ul class="list-inline text-center">
+          <li class="list-inline-item">© Copright 2017 飽飽飽</li>
+          <li class="list-inline-item">
+            <a class="text-info" href="#">
+              <i class="fa fa-instagram" aria-hidden="true"></i> Instagrame
+            </a>
+          </li>
+          <li class="list-inline-item">
+            <a class="text-info" href="#">
+              <i class="fa fa-facebook-square" aria-hidden="true"></i> Facebook
+            </a>
+          </li>
+          <li class="list-inline-item">
+            <a class="text-info" href="#">About</a>
+          </li>
+        </ul>
+        <p class="text-center">Made with Bootstrap4</p>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -137,6 +166,8 @@ export default {
       order: {
         user: {}
       },
+      carts:{},
+      length:'',
       isLoading: false
     };
   },
@@ -191,3 +222,18 @@ export default {
   }
 };
 </script>
+
+<style lang="css" scoped>
+.img {
+  background-image: url("https://images.unsplash.com/photo-1457460866886-40ef8d4b42a0?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60");
+  height: 420px;
+  background-position: bottom;
+  background-size: cover;
+}
+.bg-black {
+  height: 150px;
+  background-color: black;
+  opacity: 0.6;
+  width: 40%;
+}
+</style>
