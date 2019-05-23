@@ -155,7 +155,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <img :src="product.imageUrl" class="img-fluid" alt>
+            <img :src="product.imageUrl" class="img-fluid" style="height:300px;width:100%;" alt>
             <blockquote class="blockquote mt-3">
               <p class="mb-0">{{ product.content }}</p>
               <footer class="blockquote-footer text-right">{{ product.description }}</footer>
@@ -165,14 +165,14 @@
               <del class="h6" v-if="product.price">原價 {{ product.origin_price }} 元</del>
               <div class="h4" v-if="product.price">現在只要 {{ product.price }} 元</div>
             </div>
-            <select name class="form-control mt-3" v-model="product.num">
+            <select class="form-control mt-3" v-model="product.is_enabled">
               <option :value="num" v-for="num in 10" :key="num">選購 {{num}} {{product.unit}}</option>
             </select>
           </div>
           <div class="modal-footer">
             <div class="text-muted text-nowrap mr-3">
               小計
-              <strong>{{ product.num * product.price }}</strong> 元
+              <strong>{{ product.is_enabled * product.price }}</strong> 元
             </div>
             <button type="button" class="btn btn-primary" @click="addcart(product.id, product.num)">
               <i class="fas fa-spinner fa-spin" v-if="product.id === status.loadingItem"></i>
@@ -213,13 +213,14 @@ export default {
     return {
       products: [],
       isLoading: false,
-      product: {},
+      product: {
+      },
       status: {
         loadingItem: ""
       },
       carts: {},
       length: "",
-      tabs: "all"
+      tabs: "all",
     };
   },
   methods: {
